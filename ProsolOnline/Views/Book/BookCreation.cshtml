@@ -1,0 +1,624 @@
+﻿
+@{
+    ViewBag.Title = "BookCreation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<link href="~/Content/jBox.css" rel="stylesheet" />
+<link href="~/Content/angular-busy.min.css" rel="stylesheet" />
+<script src="/Scripts/ui-bootstrap-tpls-0.12.1.min.js"></script>
+<section role="main" class="content-body" ng-controller="BookController">
+
+    <header class="alert-messages">
+        <div class="col-md-12">
+            <div class="col-md-6"></div>
+            <div class="col-md-2">
+                <div cg-busy="cgBusyPromises" style="margin-top: -45px;z-index: 11111;position:fixed;width:50%"> </div>
+            </div>
+        </div>
+    </header>
+    <div class="col-md-12">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="alert alert-top" ng-show="NotifiyRes" ng-class="Notify" style="margin-top:5px;margin-bottom:5px;">
+                <button type="button" class="close" ng-click="NotifiyRes = !NotifiyRes"><i class="fas fa-times"></i></button>
+                <label ng-bind="Res" class="erroe-hold" />
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+
+
+    <div class="col-xs-12">
+        <section class="panel">
+
+            <header class="panel-heading">
+
+
+                <h2 class="panel-title">Book </h2>
+            </header>
+
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="tabs create-panel">
+                        <ul class="nav nav-tabs">
+
+
+                            <li class="active">
+                                <a href="#Single" data-toggle="tab" aria-expanded="true" ng-click="Loadpop()"> BookCreation</a>
+                            </li>
+                            <li class="">
+                                <a href="#Multiplebulk" data-toggle="tab" ng-click="Loadpop1()" aria-expanded="false">Bookdictionary</a>
+                            </li>
+                            <li class="">
+                                <a  href="#searchbook" data-toggle="tab" aria-expanded="false">SearchBook</a>
+                            </li>
+                            <li class="">
+                                <a href="#Oldbook" data-toggle="tab" aria-expanded="false">OldBook</a>
+                            </li>
+                            <li class="">
+                                <a href="#Newbook" data-toggle="tab" aria-expanded="false">NewBook</a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+
+
+                            <div id="Single" class="tab-pane active">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="inputDefault">Book Id</label>
+                                        <div class="col-md-9" ng-class="{'has-error': form.$submitted && form.Book_id.$invalid">
+
+                                            <input type="text" ng-model="Book_id" name="book" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="inputDefault">Book Name</label>
+                                        <div class="col-md-9">
+                                            <input type="text" ng-model="Book" name="Book" @*ng-blur="Book=Book.toUpperCase()"*@>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="inputDefault">Author Name</label>
+                                        <div class="col-md-9">
+                                            <input type="text" ng-model="Authname" name="Authname" @*ng-blur="Authname=Authname.toUpperCase()"*@>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="inputDefault">Book Price</label>
+                                        <div class="col-md-9">
+                                            <input type="text" ng-model="Price" name="Price">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Select Version<span style="color:red;font-weight:bold">*</span></label>
+                                        <div class="col-md-9">
+                                            <select ng-model="Version"  name="Version" >
+                                                <option value="" selected="selected">Select</option>
+                                                <option value="old" selected="selected">old</option>
+                                                <option value="new" selected="selected">New</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-md-5"></div>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-primary" ng-click="createData()" ng-show="sub" >Submit</button>
+                                            <button class="btn btn-primary" id="submit_button1" ng-click="changeinfo()" ng-show="btnUpdate">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div>
+                                    <div class="col-md-12">
+                                        <table datatable="ng" dt-options="dtOptions" class="table table-bordered mb-none">
+                                            <thead class="top-border">
+                                                <tr>
+                                                    <th>Book_id</th>
+                                                    <th>Book Name</th>
+                                                    <th>Author Name</th>
+                                                    <th>Book Price</th>
+                                                    <th>Actions</th>
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                                <tr ng-repeat="x in Book1">
+                                                    <td>{{x.Book_id}}</td>
+                                                    <td><label>{{x.Book}}</label></td>
+                                                    <td><label>{{x.Authname}}</label></td>
+                                                    <td><label>{{x.Price}}</label></td>
+                                                    <td>
+
+                                                        <button type="button" id="btnedit" class="btn btn-xs" style="padding:0px 5px !important" ng-click="updaterow($index)"> <i class="fa fa-pencil-alt"></i></button>
+
+                                                        <button type="button" id="btnDelete" class="btn btn-xs" style="padding:0px 5px !important" ng-click="removerow(x.Book_id)"><i class="fa fa-trash-alt"></i></button>
+                                                    </td>
+
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+                                </div>*@
+                                @*<div class="col-md-6">
+                                    <section class="content-with-menu mailbox">
+                                        <div class="content-with-menu-container" data-mailbox data-mailbox-view="folder">
+                                            <div class="inner-body mailbox-folder">
+
+                                                <div class="mailbox-email-list">
+                                                    <div class="nano has-scrollbar nano-view">
+                                                        <div class="nano-content" tabindex="0">
+                                                            <ul id="" class="list-unstyled">
+                                                                <li>
+                                                                    <div class="col-sender">
+                                                                        <p class="m-none ib">
+                                                                            Book_id
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-mail">
+                                                                        <p class="m-none mail-content">
+                                                                            <span class="subject"> BookName</span>
+                                                                        </p>
+                                                                        <p class="m-none mail-username">AuthorName</p>
+                                                                        <p class="m-none mail-date">Book_Price</p>
+                                                                       
+                                                                    </div>
+                                                                </li>
+
+                                                                <li ng-repeat="data in Book1">
+                                                                    <a ng-click="loadBook(data.Book_id)">
+                                                                        <div class="col-sender">
+                                                                            <label ng-model="data.Book_id"></label>
+                                                                            <p class="m-none ib" ng-bind="data.Book_id">
+
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-mail">
+                                                                            <p class="m-none mail-content">
+                                                                                <span class="subject" ng-bind="data.Book"></span>
+                                                                            </p>
+                                                                            <p class="m-none mail-username" ng-bind="data.Authname"> </p>
+                                                                            <p class="m-none mail-date" ng-bind="data.Price"></p>
+                                                                           
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="col-md-6">
+            <fieldset>
+                
+                <div class="panel-body" ng-show="bookform">
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <label class="control-label bold">Book_id </label>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="control-label" ng-bind="Book_id"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <label class="control-label bold">BookName</label>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="control-label" ng-bind="Book"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <label class="control-label bold">AuthorName </label>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="control-label" ng-bind="Authname"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <label class="control-label bold">Book_Price</label>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="control-label" ng-bind="Price"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <label class="control-label bold">Book Version</label>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="control-label" ng-bind="Version"></label>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                               </div>
+            </fieldset>
+        </div>*@
+
+
+                            </div>
+
+                            <div id="Multiplebulk" class="tab-pane">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Author Name</label>
+                                            <div class="col-md-3" ng-class="{'has-error': form.$submitted && form.AuthorName.$invalid">
+                                                <select ng-model="AuthorName" ng-change="GetBookname(AuthorName)" name="AuthorName" class="form-control" ng-options="x.Authname as x.Authname for x in getmattype1">
+                                                    <option value="" selected="selected">Select AuthorName</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @*<label class="col-md-3 control-label">Book Name</label>
+                                            <div class="col-md-3" ng-class="{'has-error': form.$submitted && form.BookName.$invalid">
+                                                <select ng-model="BookName" name="BookName" class="form-control" ng-options="x.Book as x.Book for x in GetBook">
+                                                    <option value="" selected="selected">Select BookName</option>
+                                                </select>
+
+
+
+                                            </div>*@
+                                            <label class="col-md-3 control-label" for="inputDefault">Book Name</label>
+                                            <div class="col-md-9 check-order">
+                                                <label for="checkboxExample1" ng-repeat="gt in GetBook" name="book" id="Book" style="width:100%;float: left;">
+                                                    <div class="checkbox-custom checkbox-default" ng-required="true">
+                                                        <input type="checkbox"
+                                                               value="{{gt.Book}}"
+                                                               ng-model="gt.x"
+                                                               ng-checked="gt.x"
+                                                               ng-click="checkbook()"> {{gt.Book}}
+                                                        <label for="checkboxExample1"></label>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-5"></div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-primary" ng-click="createData1()">Submit</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           <div id="searchbook" class="tab-pane">
+
+                                <form name="form" ng-submit="SearchItem1()">
+
+
+                                    <div class="form-group">
+                                        @*<label class="col-md-2 control-label">Description Keyword </label>*@
+                                        <div class="col-md-2">
+                                            <select class="form-control" ng-init="searchBY==null?searchBY='Book_id':searchBY" placeholder="Type Book Id" required ng-model="searchBY" ng-options="lst for lst in ['Book_id','BookName']"></select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            
+                                            <input name="srch" ng-enter="" class="form-control" placeholder="Type Book Name" ng-model="searchname" required />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-primary" type="submit">Search</button>&nbsp;<button class="btn btn-primary" type="button" ng-click="ClearItem()">Clear</button>
+                                        </div>
+                                       
+                                    </div>
+                                </form>
+                                <div class="col-md-12">
+
+                                   
+                                    <div class="col-md-12">
+
+                                        <div class="table-responsive" ng-show="bookres!=null">
+                                            <table class="table table-bordered mb-none">
+                                                <thead class="top-border">
+                                                    <tr>
+                                                        <th>Book_id</th>
+                                                        <th>BookName</th>
+                                                        <th>AuthorName</th>
+                                                        <th>Price</th>
+                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="src in bookres">
+                                                        <td class="col-md-1"><label ng-bind="src.Book_id"></label></td>
+                                                        <td class="col-md-1"><label ng-bind="src.Book"></label></td>
+                                                        <td class="col-md-1"><label ng-bind="src.Authname"></label></td>
+                                                        <td class="col-md-1"><label ng-bind="src.Price"></label></td>
+                                                        
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                           
+                                           
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div> 
+                            <div id="Oldbook" class="tab-pane">
+                                <div class="col-md-6">
+                                    <section class="content-with-menu mailbox">
+                                        <div class="content-with-menu-container" data-mailbox data-mailbox-view="folder">
+                                            <div class="inner-body mailbox-folder">
+
+                                                <div class="mailbox-email-list">
+                                                    <div class="nano has-scrollbar nano-view">
+                                                        <div class="nano-content" tabindex="0">
+                                                            <ul id="" class="list-unstyled">
+                                                                <li>
+                                                                    <div class="col-sender">
+                                                                        <p class="m-none ib">
+                                                                            Book_id
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-mail">
+                                                                        <p class="m-none mail-content">
+                                                                            <span class="subject"> BookName</span>
+                                                                        </p>
+                                                                        <p class="m-none mail-username">AuthorName</p>
+                                                                        <p class="m-none mail-date">Book_Price</p>
+                                                                        
+                                                                    </div>
+                                                                    
+                                                                </li>
+
+                                                                <li ng-repeat="data in Book11">
+                                                                    @*<a ng-click="loadBook1(data.Version)">*@
+                                                                        <div class="col-sender">
+                                                                            <label ng-model="data.Book_id"></label>
+                                                                            <p class="m-none ib" ng-bind="data.Book_id">
+
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-mail">
+                                                                            <p class="m-none mail-content">
+                                                                                <span class="subject" ng-bind="data.Book"></span>
+                                                                            </p>
+                                                                            <p class="m-none mail-username" ng-bind="data.Authname"> </p>
+                                                                            <p class="m-none mail-date" ng-bind="data.Price"></p>
+
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>  
+                                <div class="col-md-6">
+
+                                    <fieldset>
+
+
+                                        <div class="panel-body" ng-show="bookform">
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <label class="control-label bold">Book_id </label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <label class="control-label" ng-bind="Book_id"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <label class="control-label bold">BookName</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <label class="control-label" ng-bind="Book"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <label class="control-label bold">AuthorName </label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <label class="control-label" ng-bind="Authname"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <label class="control-label bold">Book_Price</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <label class="control-label" ng-bind="Price"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @*<div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <label class="control-label bold">Book Version</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <label class="control-label" ng-bind="Version"></label>
+                                                    </div>
+                                                </div>
+                                            </div>*@
+
+
+
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+
+                                </div>
+                            <div id="Newbook" class="tab-pane">
+                                <div class="col-md-6">
+                                    <section class="content-with-menu mailbox">
+                                        <div class="content-with-menu-container" data-mailbox data-mailbox-view="folder">
+                                            <div class="inner-body mailbox-folder">
+
+                                                <div class="mailbox-email-list">
+                                                    <div class="nano has-scrollbar nano-view">
+                                                        <div class="nano-content" tabindex="0">
+                                                            <ul id="" class="list-unstyled">
+                                                                <li>
+                                                                    <div class="col-sender">
+                                                                        <p class="m-none ib">
+                                                                            Book_id
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-mail">
+                                                                        <p class="m-none mail-content">
+                                                                            <span class="subject"> BookName</span>
+                                                                        </p>
+                                                                        <p class="m-none mail-username">AuthorName</p>
+                                                                        <p class="m-none mail-date">Book_Price</p>
+
+                                                                    </div>
+
+                                                                </li>
+
+                                                                <li ng-repeat="data in Book3">
+                                                                    @*<a ng-click="loadBook1(data.Version)">*@
+                                                                    <div class="col-sender">
+                                                                        <label ng-model="data.Book_id"></label>
+                                                                        <p class="m-none ib" ng-bind="data.Book_id">
+
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-mail">
+                                                                        <p class="m-none mail-content">
+                                                                            <span class="subject" ng-bind="data.Book"></span>
+                                                                        </p>
+                                                                        <p class="m-none mail-username" ng-bind="data.Authname"> </p>
+                                                                        <p class="m-none mail-date" ng-bind="data.Price"></p>
+
+                                                                    </div>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <fieldset>
+
+
+                                        <div class="panel-body" ng-show="bookform">
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <label class="control-label bold">Book_id </label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <label class="control-label" ng-bind="Book_id"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <label class="control-label bold">BookName</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <label class="control-label" ng-bind="Book"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <label class="control-label bold">AuthorName </label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <label class="control-label" ng-bind="Authname"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-4">
+                                                        <label class="control-label bold">Book_Price</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <label class="control-label" ng-bind="Price"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+    
+    </div>
+    
+
+</section>
+                 
+    <script src="/Scripts/angular-busy.min.js"></script>
+    <script src="~/Scripts/ctrls/Book.js"></script>

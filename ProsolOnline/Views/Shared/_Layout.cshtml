@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html class="fixed" >
+
+<head>
+   
+    <meta charset="utf-8" />
+    @*<base href="/gailgas/">*@
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Prosol Online</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/angular")
+
+
+</head>
+<body ng-app="ProsolApp" class="pace-done" @*onload="StartTimers();" onclick="ResetTimers();"*@>
+    @*<script language="JavaScript">
+       var validNavigation = false;
+
+function wireUpEvents() {
+  function goodbye(e) {
+      if (!validNavigation) {
+          $.ajax({
+              type: "GET",
+              url: '/login/Index'
+          });
+
+    }
+  }
+  window.onbeforeunload = goodbye;
+
+  $("a").bind("click", function() {
+    validNavigation = true;
+  });
+  $("form").bind("submit", function() {
+    validNavigation = true;
+  });
+  $("input[type=submit]").bind("click", function() {
+    validNavigation = true;
+  });
+
+}
+
+
+
+
+$(document).ready(function() {
+  wireUpEvents();
+});
+
+
+var timoutNow = 600000; // Timeout in 10 mins.
+var logoutUrl = '/login/Index'; // URL to logout page.
+
+var timeoutTimer;
+// Start timers.
+function StartTimers() {
+    timeoutTimer = setTimeout("IdleTimeout()", timoutNow);
+}
+// Reset timers.
+function ResetTimers() {
+    clearTimeout(timeoutTimer);
+    StartTimers();
+    $("#timeout").dialog('close');
+}
+document.body.onkeydown = function () {
+    clearTimeout(timeoutTimer);
+    StartTimers();
+    $("#timeout").dialog('close');
+};
+// Logout the user.
+function IdleTimeout() {
+    window.location = logoutUrl;
+}
+    </script>*@
+    @*<div id="snackbar" style="display:none;">
+
+    <div class="alert" ng-class="Notify" >
+        <button type="button" class="close" ng-click="NotifiyResclose()"><i class="fas fa-times" style="font-size: 15px;"></i></button>
+      
+        <label ng-bind="Res" class="erroe-hold" style="font-size: 14px;"/>
+    </div>
+</div>*@
+
+    <section class="body">
+        <!-- start: header -->
+        <header class="header">
+            <div class="logo-container">
+                <a href="#" class="logo">
+                    <img src="~/Images/logo.png" height="40" alt="PROSOL" />
+                </a>
+                @*<h6 class="header-content">Master Data Management</h6>*@
+                <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+                    <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+                </div>
+            </div>
+
+
+
+            <!-- end: search & user box -->
+        </header>
+        <!-- end: header -->
+
+        <div class="inner-wrapper">
+            <!-- start: sidebar -->
+
+            @{
+                Html.RenderAction("GetMenu", "Dashboard");
+            }
+            <!-- end: sidebar -->
+
+            <div>
+                @RenderBody()
+            </div>
+
+        </div>
+
+    </section>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @RenderSection("scripts", required: false)
+   
+
+</body>
+
+
+</html>

@@ -1,0 +1,429 @@
+﻿
+@{
+    ViewBag.Title = "requestservice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="/Content/angular-busy.min.css" rel="stylesheet" />
+<section role="main" class="content-body" ng-controller="RequestServiceController">
+    @*<header class="page-header">
+        <div class="right-wrapper pull-right">
+            <ol class="breadcrumbs">
+                <li><span>Service Master</span></li>
+                <li><span>Item Detail</span></li>
+            </ol>
+        </div>
+    </header>
+    <header class="page-header alert-messages">
+        <div class="col-md-12" style="background:#fff;min-height:36px;text-align:center">
+            <div class="col-md-2"></div>
+            <div class="col-md-6" style="margin:1px 0 1px 0;">
+                <div class="alert" ng-show="NotifiyRes" ng-class="Notify" style="margin-top:5px;margin-bottom:5px;">
+                    <button type="button" class="close" ng-click="NotifiyRes = !NotifiyRes"><i class="fas fa-times"></i></button>
+                    <label ng-bind="Res" class="erroe-hold" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div cg-busy="cgBusyPromises"> </div>
+            </div>
+            <div class="col-md-2">
+                <button class="download pull-right" title="Downlaod Template" ng-show="makevisiable1"><a href="/Common/BulkService.xlsx"><i class="fa fa-download"></i>&nbsp; Download Template</a></button>
+            </div>
+        </div>
+    </header>*@
+
+    <header class="alert-messages">
+        <div class="col-md-12">
+            <div class="col-md-6"></div>
+            <div class="col-md-2">
+                <div cg-busy="cgBusyPromises" style="margin-top: -45px;z-index: 11111;position:fixed;width:50%"> </div>
+            </div>
+        </div>
+    </header>
+    <div class="col-md-12">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="alert alert-top" ng-show="NotifiyRes" ng-class="Notify" style="margin-top:5px;margin-bottom:5px;">
+                <button type="button" class="close" ng-click="NotifiyRes = !NotifiyRes"><i class="fas fa-times"></i></button>
+                <label ng-bind="Res" class="erroe-hold" />
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <section class="panel form-wizard" id="w4">
+                <header class="panel-heading">
+                    <h2 class="panel-title">Service Request</h2>
+                </header>
+                <div class="panel-body">
+                  <div class="form-group">
+                        @*<div class="tabs">*@
+                            @*<ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#Single" data-toggle="tab" aria-expanded="true"> Single Master</a>
+                                </li>
+                                <li class="">
+                                    <a href="#Multiple" data-toggle="tab" aria-expanded="false">Multiple Master</a>
+                                </li>
+                            </ul>*@
+                            @*<div class="tab-content">*@
+
+                                @*<div id="Single" class="tab-pane active">
+                                    <div class="col-md-6">
+                                        <form name="reqform" ng-submit="reqform.$valid && newRequest_SM()" novalidate>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="textareaDefault">Service Category</label>
+                                                <div class="col-md-8">
+                                                    <div class="controls" ng-class="{'has-error': reqform.$submitted && reqform.ServiceCategorycode1S.$invalid }">
+                                                        <select ng-model="obj.SeviceCategorycode" ng-change="getgroup1(obj.SeviceCategorycode)" id="ServiceCategorycodee1" name="ServiceCategorycode1S" class="form-control" ng-options="x.SeviceCategorycode as x.SeviceCategoryname for x in getcategory | filter :{'Islive':true}" required>
+
+                                                            <option value="" selected="selected">Select Service Category</option>
+                                                        </select>
+
+                                                       
+                                                        </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="textareaDefault">Service Group</label>
+                                                <div class="col-md-8">
+                                                    <div class="controls" ng-class="{'has-error': reqform.$submitted && reqform.ServiceGroupcode1S.$invalid }">
+                                                        <select ng-model="obj.ServiceGroupcode" id="ServiceGroupcodee" name="ServiceGroupcode1S" class="form-control" ng-options="x.ServiceGroupcode as x.ServiceGroupname for x in getgroup1S | filter: {'Islive':true}" required>
+                                                            <option value="" selected="selected">Select Service Group</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-4">
+                                                    <label class="control-label" for="textareaDefault">Unit of Measurement</label>
+                                                </div>
+                                                <div class="col-md-8">
+
+                                                    <div class="controls" ng-class="{'has-error': reqform.$submitted && reqform.ServiceUomcodee.$invalid }">
+                                                        <select ng-model="obj.ServiceUomcode" id="ServiceUomcode1" name="ServiceUomcodee" class="form-control" ng-options="x.ServiceUomcode as x.ServiceUomname for x in getuomS | filter :{'Islive':true}" required>
+                                                            <option value="" selected="selected">Select UOM</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="textareaDefault">Service Discription</label>
+                                                <div class="col-md-8">
+                                                    <div class="controls" ng-class="{'has-error': reqform.$submitted && reqform.ServiceDiscription.$invalid}">
+
+                                                        <textarea class="form-control immediate-help" name="ServiceDiscription" ng-model="obj.ServiceDiscription" rows="3" required></textarea>
+                                                        <div ng-show="reqform.ServiceDiscription.$invalid" class="input-help">
+                                                        </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-4">
+                                                    <label class="control-label" for="textareaDefault">Cleanser</label>
+                                                </div>
+                                                <div class="col-md-8">
+
+                                                    <div class="controls" ng-class="{'has-error': reqform.$submitted && reqform.Cleanser1.$invalid }">
+                                                        <select ng-model="Cleanserddl" id="Cleanser" name="Cleanser1" class="form-control" ng-options="x.Userid as x.UserName for x in getcleanser | filter :{'Islive':Active}" required>
+                                                            <option value="" selected="selected">Select Cleanser</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-6">
+
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <input type="submit" ng-disabled="false != ngdis2" class="btn btn-xs btn-primary pull-right" value="Request">
+
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="col-md-1"><div cg-busy="promise2" style="top:50px"></div></div>
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>*@
+                                @*<div id="Multiple" class="tab-pane">*@
+                        <div class="tabs">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#single" data-toggle="tab" ng-click="visiable1()">  single & Multi Request</a>
+                                </li>
+                                <li>
+                                    <a href="#multi" data-toggle="tab" ng-click="visiable()">Bulk Request</a>
+                                </li>
+                                <button class="download pull-right" title="Downlaod Template" ng-show="makevisiable1"><a href="/Common/BulkService.xlsx"><i class="fa fa-download example-2"></i>&nbsp; Download Template</a></button>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="single" class="tab-pane active">
+                                    <div class="col-md-6">
+                                        <form name="reqform_multi" ng-submit="reqform_multi.$valid && addrowtobulktable_SM()" novalidate>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="textareaDefault">Plant</label>
+                                                <div class="col-md-8">
+                                                    <div class="controls" ng-class="{'has-error': reqform_multi.$submitted && reqform_multi.PlantCode.$invalid }">
+                                                        <select ng-model="obj.PlantCode" id="PlantCode" name="PlantCode" class="form-control" ng-options="x.Plantcode as x.Plantname for x in getplant | filter :{'Islive':true}" required>
+                                                            <option value="" selected="selected">Select Plant</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="textareaDefault">Category</label>
+                                                <div class="col-md-8">
+                                                    <div class="controls" ng-class="{'has-error': reqform_multi.$submitted && reqform_multi.ServiceCategorycode1M.$invalid }">
+                                                        @*<select ng-model="obj.SeviceCategorycode" ng-change="getgrpreqM(obj.SeviceCategorycode)" id="ServiceCategorycodee1M" name="ServiceCategorycode1M" class="form-control" ng-options="x.SeviceCategorycode as x.SeviceCategoryname for x in getcategory1M | filter :{'Islive':true}" required>
+                                                            <option value="" selected="selected">Select Category</option>
+                                                        </select>*@
+                                                        <select ng-model="obj.SeviceCategorycode" class="form-control" @*ng-change="getgrpreqM(obj.SeviceCategorycode)"*@  id="ServiceCategorycodee1M" name="ServiceCategorycode1M" ng-options="x.Segment as x.Segment+' - '+x.SegmentTitle for x in Commodities | unique:'Segment' " required>
+                                                            <option value="" selected="selected">Select</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="textareaDefault">Group</label>
+                                                <div class="col-md-8">
+                                                    <div class="controls" ng-class="{'has-error': reqform_multi.$submitted && reqform_multi.ServiceGroupcodee1M.$invalid }">
+                                                        @*<select ng-model="obj.ServiceGroupcode" id="ServiceGroupcode1M" name="ServiceGroupcodee1M" class="form-control" ng-options="x.ServiceGroupcode as x.ServiceGroupname for x in group | filter: {'Islive':true}" required>
+                                                            <option value="" selected="selected">Select Group</option>
+                                                        </select>*@
+                                                        <select ng-model="obj.ServiceGroupCode" class="form-control" id="ServiceGroupcode1M" name="ServiceGroupcodee1M" ng-options="x.Family as x.Family+' - '+x.FamilyTitle for x in Commodities| unique:'Family' | filter :{'Segment':  obj.SeviceCategorycode}" required>
+                                                            <option value="" selected="selected">Select</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+
+                                                <div class="col-sm-4">
+                                                    <label class="control-label" for="textareaDefault">Unit of Measurement</label>
+                                                </div>
+                                                <div class="col-md-8">
+
+                                                    <div class="controls" ng-class="{'has-error': reqform_multi.$submitted && reqform_multi.ServiceUomcodee1M.$invalid }">
+                                                        <select ng-model="obj.ServiceUomcode" id="ServiceUomcode1M" name="ServiceUomcodee1M" class="form-control" ng-options="x.UOMNAME as x.UOMNAME for x in getuom1M" required>
+                                                            <option value="" selected="selected">Select UOM</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="textareaDefault">Service Description</label>
+                                                <div class="col-md-8">
+                                                    <div class="controls" ng-class="{'has-error': reqform_multi.$submitted && reqform_multi.ServiceDiscription1.$invalid}">
+
+                                                        <textarea class="form-control immediate-help" name="ServiceDiscription1" ng-model="obj.ServiceDiscription1" rows="3" required></textarea>
+                                                        <div ng-show="reqform_multi.ServiceDiscription1.$invalid" class="input-help">
+                                                            <h4 ng-show="reqform_multi.ServiceDiscription1.$error.required">Description should not be blank</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-4">
+                                                    <label class="control-label" for="textareaDefault">Cataloguer</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="controls" ng-class="{'has-error': reqform_multi.$submitted && reqform_multi.Cleanser1.$invalid }">
+                                                        <select ng-model="Cleanserddl" id="Cleanser" name="Cleanser1" class="form-control" ng-options="x.Userid as x.UserName for x in getCleanser1 | filter :{'Islive':Active}" required>
+                                                            <option value="" selected="selected">Select Cataloguer</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-8"></div>
+
+                                                <div class="col-md-4">
+                                                    <button type="submit" id="btnAdd" class="btn btn-xs btn-primary classAdd" ng-show="add_button">Add</button>
+                                                    <button type="button" id="btnupdate" ng-click="reqform_multi.$valid && update_table()" class="btn btn-xs btn-primary classAdd" ng-show="update_button">Update</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6">
+                                    </div>
+                                    <form ng-submit="bulk_material_request_SM()" ng-show="(rows| filter:Sequence).length">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table id="maintable" class="table table-responsive table-bordered">
+                                                    <thead class="top-border">
+                                                        <tr>
+                                                            <th style="width: 4%">S.No</th>
+                                                            <th style="width: 5%">Plant</th>
+                                                            <th style="width: 15%">Category</th>
+                                                            <th style="width: 15%">Group</th>
+                                                            <th style="width: 5%">UOM</th>
+                                                            <th style="width: 40%">Service Desc</th>
+                                                            <th style="width: 10%">Cleanser</th>
+                                                            <th style="width: 6%">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="data-contact-person" ng-repeat="Req in rows">
+                                                            <td>
+                                                                <label class="req-label" ng-model="Req.Sequence" id="Squence"> {{Req.Sequence}} </label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="req-label" ng-model="Req.PlantName" ng-bind="Req.PlantName.length> 10 ? (Req.PlantName | limitTo: 10) +'...' : Req.PlantName"></label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="req-label" ng-model="Req.ServiceCategoryName" ng-bind="Req.ServiceCategoryName.length> 50 ? (Req.ServiceCategoryName | limitTo: 50) +'...' : Req.ServiceCategoryName"> </label> 
+                                                            </td>
+                                                            <td>
+                                                                <label class="req-label" ng-model="Req.ServiceGroupName" ng-bind="Req.ServiceGroupName.length> 50 ? (Req.ServiceGroupName | limitTo: 50) +'...' : Req.ServiceGroupName"> </label> 
+                                                            </td>
+                                                            <td>
+                                                                <label class="req-label" ng-model="Req.UomName" ng-bind="Req.UomName.length> 5 ? (Req.UomName | limitTo: 5) +'...' : Req.UomName"> </label> 
+                                                            </td>
+                                                            <td>
+                                                                <label class="req-label" ng-model="Req.Legacy" ng-bind="Req.Legacy.length> 60 ? (Req.Legacy | limitTo: 60) +'...' : Req.Legacy"> </label> 
+                                                            </td>
+                                                            <td>
+                                                                <label class="req-label" ng-model="Req.Cleanser1" ng-bind="Req.Cleanser1.length> 10 ? (Req.Cleanser1 | limitTo: 10) +'...' : Req.Cleanser1"></label> 
+                                                            </td>
+                                                            <td ng-hide="true">
+                                                                <label class="req-label" ng-model="Req.ServiceCategoryCode"></label>
+                                                            </td>
+                                                            <td ng-hide="true">
+                                                                <label class="req-label" ng-model="Req.ServiceGroupCode"></label>
+                                                            </td>
+                                                            <td>
+
+                                                                <button type="button" id="btnedit" class="btn btn-xs" style="padding:0px 5px !important" ng-click="updaterow($index)"> <i class="fas fa-pencil-alt"></i></button>
+
+                                                                <button type="button" id="btnDelete" class="btn btn-xs" style="padding:0px 5px !important" ng-click="removerow($index)"><i class="fa fa-trash"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group col-md-12">
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-2">
+                                                <input type="submit" ng-disabled="false != ngdis1" class="btn btn-xs btn-primary pull-right" value="Submit Request">
+
+
+                                            </div>
+                                            <div class="col-md-2">
+                                                @*<div class="col-md-1"><div cg-busy="promise1" style="top:50px"></div></div>*@
+                                                @*<div ng-show="show_loading_multiple"><div ><img src="~/Images/loading.gif" /></div></div>*@
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <div id="multi" class="tab-pane">
+                                    <div class="col-md-12">
+                                        <label class="col-md-2 control-label">File Upload  </label>
+                                        <div class="col-md-5">
+                                            <div class="col-md-10">
+                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                    <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                                    <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span><input type="hidden"><input type="file" name="file" onchange="angular.element(this).scope().LoadFileData2(this.files)" ></span>
+                                                    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="btn btn-primary"  ng-click="Loadfile2()">Load</button>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <div class="col-md-12" ng-hide=hidetb2>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered mb-none">
+                                                <thead class="top-border">
+                                                    <tr>
+                                                        <th>plant</th>
+                                                        <th>CategoryName</th>
+                                                        <th>CategoryCode</th>
+                                                        <th>GroupCode</th>
+                                                        <th>GroupName</th>
+                                                        <th>Uom</th>
+                                                        <th>ServiceDescription</th>
+                                                        <th>Cleanser ID</th>
+                                                        @*<th>Show Duplicate</th>*@
+                                                        @*<th>Remove</th>*@
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="src in sResultbulk1">
+                                                        <td><label ng-bind="src.PlantName"></label></td>
+                                                        <td><label ng-bind="src.ServiceCategoryCode"></label></td>
+                                                        <td><label ng-bind="src.ServiceCategoryName"></label></td>
+                                                        <td><label ng-bind="src.ServiceGroupCode"></label></td>
+                                                        <td><label ng-bind="src.ServiceGroupName"></label></td>
+                                                        <td><label ng-bind="src.UomName"></label></td>
+                                                        <td><label ng-bind="src.Legacy"></label></td>
+                                                        <td><label ng-bind="src.Cleanser"></label></td>
+                                                        @*<td class="actions">
+
+                                <div class="col-md-3" ng-click="clickToOpenBulkduplicates(src)" style="cursor:pointer"><i class="fa fa-search"></i></div>
+
+
+                            </td>
+                            <td><div class="col-md-3" ng-click="clickToremoverow($index)" style="cursor:pointer"><i class="fas fa-times"></i></div></td>*@
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-2">
+                                                <div class="col-md-4"><button type="button" class="btn btn-primary" ng-disabled="false != ngdis" ng-click="bulkupload_service_request()">Submit</button></div>
+
+
+                                            </div>
+                                            <div class="col-md-2">
+                                                @*<div class="col-md-1"><div cg-busy="promise" style="top:50px"></div></div>*@
+
+                                            </div>
+                                            <div class="col-md-4"></div>
+                                        </div>
+                                    </div>
+                                 </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                                @*</div>*@
+                            @*</div>*@
+                        @*</div>*@
+                
+                </div>
+
+            </section>
+        </div>
+    </div>
+</section>
+
+<script src="/Scripts/angular-busy.min.js"></script>
+<script src="/Scripts/ctrls/RequestService.js"></script>

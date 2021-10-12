@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewBag.Title = "HomeIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/jBox.css" rel="stylesheet" />
+<section role="main" class="content-body" ng-controller="HomeController">
+    @*<header class="page-header">
+            <div class="right-wrapper pull-right">
+                <ol class="breadcrumbs">
+
+                    <li><span>Home</span></li>
+                </ol>
+            </div>
+        </header>*@
+
+    <!-- start: page -->
+    <section class="panel">
+        <header class="panel-heading">
+            <h2 class="panel-title">
+                HOME DASHBOARD
+            </h2>
+        </header>
+
+        <div class="form-group">
+
+
+
+            <div class="col-md-2 dashboard-design mb-3">
+
+                <div class="panel-body" style="padding: 10px;">
+
+                    <a href="/Dashboard/Index">
+                        <div class="widget-summary">
+                            <div class="" style="margin:0 auto;text-align:center;">
+                                <img src="~/Images/material-management.png">
+                            </div>
+
+                            <div style="margin: 0 auto;text-align: center;">
+                                Material Master
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-2 dashboard-design mb-3">
+
+                <div class="panel-body" style="padding: 10px;">
+                    <a href="/ServiceSearch/ServiceDashboard">
+                        <div class="widget-summary">
+                            <div class="" style="margin:0 auto;text-align:center;">
+                                <img src="~/Images/service-master.png">
+                            </div>
+
+                            <div style="margin: 0 auto;text-align: center;">
+                                Service Master
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-2 dashboard-design mb-3">
+
+                <div class="panel-body" style="padding: 10px;">
+                    <a href="/Bom/BomDashboard">
+                        <div class="widget-summary">
+                            <div class="" style="margin:0 auto;text-align:center;">
+                                <img src="~/Images/bom.png">
+                            </div>
+
+                            <div style="margin: 0 auto;text-align: center;">
+                                BOM
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-2 dashboard-design mb-3">
+
+                <div class="panel-body" style="padding: 10px;">
+                    <a href="/Asset/FunctLoc">
+
+                        <div class="widget-summary">
+                            <div style="margin:0 auto;text-align:center;">
+                                <img src="~/Images/asset-master-icon.png" />
+
+                            </div>
+
+                            <div style="margin: 0 auto;text-align: center;">
+                                Asset Master
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-2 dashboard-design mb-3">
+
+                <div class="panel-body" style="padding: 10px;">
+                    <a href="/GeneralSettings/Vendor">
+
+                        <div class="widget-summary">
+                            <div style="margin:0 auto;text-align:center;">
+
+                                <img src="~/Images/vendor-master.png" />
+                            </div>
+
+                            <div style="margin: 0 auto;text-align: center;">
+                                Business Partner
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+
+    </section>
+</section>
+
+<script src="~/Scripts/ctrls/HomeController.js"></script>
+
+
+
+<script src="~/Scripts/jBox.js"></script>
+
+<script src="/Scripts/jsapi.js"></script>
+
+
+
+
+
+
+
